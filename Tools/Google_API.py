@@ -1,4 +1,14 @@
 
+def set_SCOPES():
+    # Define the required scopes for YouTube API access
+    SCOPES = ['https://www.googleapis.com/auth/youtube.readonly',
+            'https://www.googleapis.com/auth/userinfo.email',   #for email
+            'https://www.googleapis.com/auth/userinfo.profile', #for email
+            'openid'                                            #for email
+        ]
+    
+    return SCOPES
+
 def get_user_info():
     """
     Returns user nickname, email and profile picture path.
@@ -29,12 +39,8 @@ def get_user_info():
     #     email = profile['emailAddresses'][0]['value']
     #    return(email)
 
-    # Define the required scopes for YouTube API access
-    SCOPES = ['https://www.googleapis.com/auth/youtube.readonly',
-            'https://www.googleapis.com/auth/userinfo.email',   #for email
-            'https://www.googleapis.com/auth/userinfo.profile', #for email
-            'openid'                                            #for email
-        ]
+
+    SCOPES = set_SCOPES()
 
     # Path to your OAuth 2.0 credentials file (JSON file downloaded from Google Cloud Console)
     CLIENT_SECRETS_FILE = 'Tools/Google/client_secret.json'

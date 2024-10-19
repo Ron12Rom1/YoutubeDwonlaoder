@@ -4,17 +4,18 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 import google_auth_oauthlib
 from google.auth.transport.requests import Request
+from Tools.Google_API import set_SCOPES
 
 
 # Path to your OAuth2 credentials file (from Google Cloud Console)
 # GOOGLE_CLIENT_SECRETS_FILE = "Tools\Google\client_secret.json"
 
 # Scopes for retrieving user info, including 'openid' to match Google's changes
-SCOPES = [
-    'https://www.googleapis.com/auth/userinfo.email',   #for email
-    'https://www.googleapis.com/auth/userinfo.profile', #for email
-    'openid'                                            #for email
-]
+# SCOPES = [
+#     'https://www.googleapis.com/auth/userinfo.email',   #for email
+#     'https://www.googleapis.com/auth/userinfo.profile', #for email
+#     'openid'                                            #for email
+# ]
 
 def get_user_email():
     """
@@ -23,6 +24,8 @@ def get_user_email():
     And same as get user info, Just pray to god you will never look at this code...
     """
     credentials = None
+
+    SCOPES = set_SCOPES()
     
     CLIENT_SECRETS_FILE = 'Tools/Google/client_secret.json'
 
@@ -43,14 +46,10 @@ def get_user_email():
             flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
                 CLIENT_SECRETS_FILE, SCOPES)
             credentials = flow.run_local_server(port=0)
-        
-    # Save the credentials for the next run
-    with open(CREDENTIALS_PICKLE_FILE, 'wb') as token:
-        pickle.dump(credentials, token)
 
-    # Run the InstalledAppFlow to obtain credentials
-    # flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    # credentials = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+            with open(CREDENTIALS_PICKLE_FILE, 'wb') as token:
+                pickle.dump(credentials, token)
 
     # Use credentials to call Google's People API
     service = build('people', 'v1', credentials=credentials)
