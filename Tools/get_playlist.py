@@ -50,6 +50,7 @@ def get_user_playlists():
 
 
 def get_playlist_urls(playlist_id):
+    from pytubefix import YouTube
     credentials = None
     
     SCOPES = set_SCOPES()
@@ -78,9 +79,29 @@ def get_playlist_urls(playlist_id):
             with open(CREDENTIALS_PICKLE_FILE, 'wb') as token:
                 pickle.dump(credentials, token)
 
-    #TODO: Finish this function
-    print(playlist_id)
+    # Build the YouTube API client using the credentials
+    youtube = build('youtube', 'v3', credentials=credentials)
+
+    # Get the playlist's videos
+    request = youtube.playlistItems().list(
+        part="contentDetails",
+        playlistId=playlist_id,
+        maxResults=50
+    )
+    response = request.execute()
+
+    videos = []
+    for video in response['items']:
+        url = f"https://www.youtube.com/watch?v={video['contentDetails']['videoId']}"
+        title =  YouTube(url).title
+        videos.append({
+            'title':  title,
+            'url': url
+        })
+
+    return(videos)
+    # return(playlist_id)
 
 if __name__ == '__main__':
-    # get_playlist_urls("RDuDXMDiL7R8w")
-    get_user_playlists()
+    get_playlist_urls("RDuDXMDiL7R8w")
+    # get_user_playlists()
