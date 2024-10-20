@@ -13,7 +13,7 @@ from build.gui import open_window
 
 # selected_playlist = input("Enter the playlist ID: ") #"PLAklA4JvzQ-oSCX9Vwrius5lJQitcg9Wc"
 
-#TODO : handel video unavable
+# # TODO : handel video unavable
 # list = get_playlist_urls(selected_playlist)
 # print("\n", list)
 

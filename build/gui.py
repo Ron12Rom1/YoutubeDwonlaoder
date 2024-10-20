@@ -62,7 +62,7 @@ def open_window(list):
             font=("Arial", 20),
             # anchor="e"
         )
-        title_label.place(x = -50, y = -11, relx=0.5, rely=0.5)  # Center the label in the frame
+        title_label.place(x = -50, y = -25, relx=0.5, rely=0.5)  # Center the label in the frame
 
 
     # Initialize the main window
@@ -73,35 +73,32 @@ def open_window(list):
     # Left Sector (smaller box with rounded edges)
     left_frame = ctk.CTkFrame(
         window,
-        width=200,
-        height=400,
+        width=240,
+        height=435,
         corner_radius=30,
         fg_color="#7A00A9"
     )
-    left_frame.place(x=50, y=50)  # Position of the left frame
+    left_frame.place(x=26, y=25)
 
     # Add a gray rounded box inside the left sector
-    gray_inner_frame = ctk.CTkFrame(
+    user_frame = ctk.CTkFrame(
         left_frame,
-        width=150,
+        width=195,
         height=50,
         corner_radius=25,
         fg_color="#555555"
     )
-    gray_inner_frame.place(x=25, y=25)  # Adjust position inside the left frame
+    user_frame.place(x=25, y=25)  # Adjust position inside the left frame
 
     # Right Sector (scrollable frame for added panels)
     scrollable_frame = ctk.CTkScrollableFrame(
         window,
         width=450,  # Keeping the original width
-        height=400,  # Keeping the original height
+        height=375,  # Keeping the original height
         corner_radius=30,
         fg_color="#7A00A9"
     )
     scrollable_frame.place(x=275, y=25)  # Position of the scrollable frame
-
-    # List of random names
-    names_list = ["Alice", "Bob", "Charlie", "Diana", "Ethan", "Fiona"]
 
     # Add a larger link button inside the left sector
     connect_bnt = ctk.CTkButton(
