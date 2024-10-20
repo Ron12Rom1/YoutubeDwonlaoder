@@ -10,6 +10,11 @@ else:
 
 def get_mp3(vid):
 
+    if os.path.exists("out"):
+        pass
+    else:
+        os.mkdir("out")
+
     url = vid['url']
 
     yt = YouTube(url, on_progress_callback = on_progress)
@@ -21,7 +26,30 @@ def get_mp3(vid):
     ys.download(mp3=True, output_path="out")
 
 
+def shape_tumbnail(file_name):
 
+    from PIL import Image
+
+    # Load the image
+    image = Image.open("out/" + file_name)
+
+    # Get the dimensions of the image (width, height)
+    width, height = image.size
+
+    # Define how much to crop from the top and bottom
+    top_crop = 60  # Pixels to crop from the top
+    bottom_crop = top_crop  # Pixels to crop from the bottom
+
+    # Define the cropping box (left, upper, right, lower)
+    crop_box = (0, top_crop, width, height - bottom_crop)
+
+    # Crop the image
+    cropped_image = image.crop(crop_box)
+
+    # Save the cropped image
+    cropped_image.save("out/" + file_name)
+
+    print(f"Thumbnail shape successfully as {file_name}")
 
 def get_thumbnail(vid):
     
@@ -50,6 +78,8 @@ def get_thumbnail(vid):
             with open(f"out/{file_name}", 'wb') as file:
                 file.write(response.content)
             print(f"Thumbnail downloaded successfully as {file_name}")
+            vid["thumbnail"] = f"out/{file_name}"
+            shape_tumbnail(file_name)
         else:
             print("Failed to download thumbnail")
     
