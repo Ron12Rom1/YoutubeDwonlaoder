@@ -1,6 +1,7 @@
 import requests, os
 from pytubefix import YouTube
 from pytubefix.cli import on_progress
+from Tools.get_playlist import get_playlist_urls
 
 
 if os.path.exists("out"):
@@ -8,22 +9,32 @@ if os.path.exists("out"):
 else:
     os.mkdir("out")
 
-def get_mp3(vid):
+def get_mp3(playlist, path=None):
+    print(path)
 
-    if os.path.exists("out"):
-        pass
-    else:
-        os.mkdir("out")
+    if path != "Please choose a folder":
+        print(path)
+        print(playlist)
 
-    url = vid['url']
+        videos = get_playlist_urls(playlist)
+        print(videos)
 
-    yt = YouTube(url, on_progress_callback = on_progress)
-    print(yt.title)
-    vid['name'] = yt.title
-    
-    # thumbnail.download()
-    ys = yt.streams.get_audio_only()
-    ys.download(mp3=True, output_path="out")
+        if os.path.exists("out"):
+            pass
+        else:
+            os.mkdir("out")
+
+        for vid in videos:
+            print(vid)
+            url = vid['url']
+
+            yt = YouTube(url, on_progress_callback = on_progress)
+            print(yt.title)
+            # vid['title'] = yt.title
+            
+            # thumbnail.download()
+            ys = yt.streams.get_audio_only()
+            ys.download(mp3=True, output_path=path)
 
 
 def shape_tumbnail(file_name):
@@ -63,7 +74,7 @@ def get_thumbnail(vid):
         thumbnail_url = yt.thumbnail_url
         
         # Get the video title to use as the filename
-        title = vid['name']
+        title = vid['title']
     
         # Clean the title to avoid file system issues
         safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '_')).rstrip()

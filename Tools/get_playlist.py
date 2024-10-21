@@ -3,6 +3,7 @@ import google_auth_oauthlib
 from google.auth.transport.requests import Request
 from Tools.Google_API import set_SCOPES
 from googleapiclient.discovery import build
+from pytubefix.exceptions import VideoUnavailable
 
 
 def get_user_playlists():
@@ -93,7 +94,10 @@ def get_playlist_urls(playlist_id):
     videos = []
     for video in response['items']:
         url = f"https://www.youtube.com/watch?v={video['contentDetails']['videoId']}"
-        title =  YouTube(url).title
+        try:
+            title =  YouTube(url).title
+        except VideoUnavailable:
+            title = "[Video Unavailable]"
         videos.append({
             'title':  title,
             'url': url
